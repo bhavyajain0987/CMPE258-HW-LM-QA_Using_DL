@@ -10,9 +10,9 @@ from models import load_all_models
 def create_ui():
     """Create and return the Gradio Blocks UI."""
     
-    with gr.Blocks(title="QA Model Assignment") as demo:
-        gr.Markdown("# 🤖 Question Answering Model Comparator")
-        gr.Markdown("Compare **DistilBERT** (Fast) vs **RoBERTa** (Accurate) on custom text or standard benchmarks.")
+    with gr.Blocks(title="Q&A Model Assignment") as demo:
+        gr.Markdown("# 🤖 Question and Answering Model Comparator")
+        gr.Markdown("Compare **DistilBERT** vs **RoBERTa** on custom text or standard benchmarks.")
         
         # Loading status banner
         loading_status = gr.Markdown("""
@@ -40,15 +40,15 @@ def create_ui():
                     )
                     btn_test = gr.Button("Ask Models", variant="primary", interactive=False)
                 with gr.Column():
-                    out_fast = gr.Textbox(label="DistilBERT Result")
-                    out_acc = gr.Textbox(label="RoBERTa Result")
+                    out_distilbert = gr.Textbox(label="DistilBERT Result")
+                    out_roberta = gr.Textbox(label="RoBERTa Result")
                     out_win = gr.Label(label="Comparison")
             
-            btn_test.click(run_custom_test, inputs=[ctx_input, q_input], outputs=[out_fast, out_acc, out_win])
+            btn_test.click(run_custom_test, inputs=[ctx_input, q_input], outputs=[out_distilbert, out_roberta, out_win])
 
-        with gr.Tab("2. Predefined Samples"):
-            gr.Markdown("### 📋 Test with Predefined Samples")
-            gr.Markdown("Select a sample and question to compare how both models perform. These samples are designed to highlight differences between DistilBERT and RoBERTa.")
+        with gr.Tab("2. Predefined Test Samples"):
+            gr.Markdown("### 📋 Test with Predefined Test Samples")
+            gr.Markdown("Select a sample and question to compare how both models perform. These samples highlight differences between DistilBERT and RoBERTa.")
             
             with gr.Row():
                 with gr.Column(scale=1):
@@ -76,8 +76,8 @@ def create_ui():
                     btn_sample_test = gr.Button("🔍 Compare Models", variant="primary", interactive=False)
                 
                 with gr.Column(scale=1):
-                    sample_out_fast = gr.Textbox(label="🚀 DistilBERT (Fast)")
-                    sample_out_acc = gr.Textbox(label="🎯 RoBERTa (Accurate)")
+                    sample_out_distilbert = gr.Textbox(label="🚀 DistilBERT")
+                    sample_out_roberta = gr.Textbox(label="🎯 RoBERTa")
                     sample_comparison = gr.Markdown(label="Analysis")
             
             # Update context and questions when sample changes
@@ -110,7 +110,7 @@ def create_ui():
             btn_sample_test.click(
                 fn=run_sample_comparison,
                 inputs=[sample_dropdown, question_dropdown],
-                outputs=[sample_out_fast, sample_out_acc, sample_comparison]
+                outputs=[sample_out_distilbert, sample_out_roberta, sample_comparison]
             )
 
         with gr.Tab("3. Dataset Evaluation"):

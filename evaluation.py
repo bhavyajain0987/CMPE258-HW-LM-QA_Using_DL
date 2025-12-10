@@ -13,8 +13,8 @@ def run_custom_test(context, question):
     if not config.models_ready:
         return "⏳ Models still loading...", "⏳ Please wait...", "Loading..."
     
-    res1 = config.qa_fast(question=question, context=context)
-    res2 = config.qa_accurate(question=question, context=context)
+    res1 = config.qa_distilbert(question=question, context=context)
+    res2 = config.qa_roberta(question=question, context=context)
     
     # Format output for UI
     out1 = f"**Answer:** {res1['answer']}\n**Conf:** {res1['score']:.4f}"
@@ -22,9 +22,9 @@ def run_custom_test(context, question):
     
     # Determine winner
     if res1['score'] > res2['score']:
-        winner = "DistilBERT (Fast) is more confident."
+        winner = "DistilBERT is more confident."
     else:
-        winner = "RoBERTa (Accurate) is more confident."
+        winner = "RoBERTa is more confident."
         
     return out1, out2, winner
 
@@ -35,7 +35,7 @@ def run_dataset_evaluation(progress=gr.Progress()):
         return pd.DataFrame(), None
     
     results_list = []
-    models = [("DistilBERT", config.qa_fast), ("RoBERTa", config.qa_accurate)]
+    models = [("DistilBERT", config.qa_distilbert), ("RoBERTa", config.qa_roberta)]
     
     progress(0, desc="Starting Evaluation...")
     total_steps = len(models) * len(config.squad_subset)
@@ -126,8 +126,8 @@ def run_sample_comparison(sample_name, question):
     context = TEST_SAMPLES[sample_name]["context"]
     expected = get_expected_answer(sample_name, question)
     
-    res1 = config.qa_fast(question=question, context=context)
-    res2 = config.qa_accurate(question=question, context=context)
+    res1 = config.qa_distilbert(question=question, context=context)
+    res2 = config.qa_roberta(question=question, context=context)
     
     out1 = f"**Answer:** {res1['answer']}\n**Confidence:** {res1['score']:.4f}"
     out2 = f"**Answer:** {res2['answer']}\n**Confidence:** {res2['score']:.4f}"
@@ -183,7 +183,7 @@ def run_sample_comparison(sample_name, question):
         if res2['score'] > res1['score']:
             analysis += "**🏆 Winner: RoBERTa** - Both correct, but RoBERTa is more confident"
         elif res1['score'] > res2['score']:
-            analysis += "**🏆 Winner: DistilBERT** - Both correct, and DistilBERT is more confident (faster too!)"
+            analysis += "**🏆 Winner: DistilBERT** - Both correct, and DistilBERT is more confident"
         else:
             analysis += "**🤝 Tie** - Both models got the correct answer with similar confidence"
     elif rob_correct and not dist_correct:

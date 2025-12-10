@@ -1,7 +1,7 @@
 """
 QA Model Comparator - Main Entry Point
 
-This application compares DistilBERT (Fast) vs RoBERTa (Accurate)
+This application compares DistilBERT vs RoBERTa
 on question answering tasks using custom text or standard benchmarks.
 
 Modular Structure:

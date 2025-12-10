@@ -8,8 +8,8 @@ device = "mps" if torch.backends.mps.is_available() else "cpu"
 print(f"Running on: {device.upper()}")
 
 # Global state - models loaded lazily after UI launches
-qa_fast = None
-qa_accurate = None
+qa_distilbert = None
+qa_roberta = None
 metric = None
 bertscore_metric = None
 rouge_metric = None

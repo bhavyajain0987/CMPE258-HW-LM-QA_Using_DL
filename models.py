@@ -12,11 +12,11 @@ def load_all_models(progress=gr.Progress()):
     """Load all models and datasets with progress updates."""
     
     try:
-        progress(0.1, desc="🔄 Loading DistilBERT (Fast model)...")
-        config.qa_fast = pipeline("question-answering", model="distilbert-base-cased-distilled-squad", device=config.device)
+        progress(0.1, desc="🔄 Loading DistilBERT...")
+        config.qa_distilbert = pipeline("question-answering", model="distilbert-base-cased-distilled-squad", device=config.device)
         
-        progress(0.3, desc="🔄 Loading RoBERTa (Accurate model)...")
-        config.qa_accurate = pipeline("question-answering", model="deepset/roberta-base-squad2", device=config.device)
+        progress(0.3, desc="🔄 Loading RoBERTa...")
+        config.qa_roberta = pipeline("question-answering", model="deepset/roberta-base-squad2", device=config.device)
         
         progress(0.5, desc="🔄 Loading SQuAD dataset...")
         config.squad_subset = load_dataset("squad_v2", split="validation").shuffle(seed=42).select(range(50))
